@@ -114,4 +114,19 @@ public class IntegracionJpaTest {
         assertEquals("3800", cuentaActualizada.getSaldo().toPlainString());
 
     }
+
+    @Test
+    void testDelete() {
+        Cuenta cuenta = icuentaRepository.findById(2L).orElseThrow();
+        assertEquals("John", cuenta.getPersona());
+
+        icuentaRepository.delete(cuenta);
+
+        assertThrows(NoSuchElementException.class, () -> {
+//            cuentaRepository.findByPersona("John").orElseThrow();
+            icuentaRepository.findById(2L).orElseThrow();
+        });
+        assertEquals(1, icuentaRepository.findAll().size());
+    }
+
 }
