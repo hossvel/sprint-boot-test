@@ -13,8 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -119,4 +118,18 @@ class SprintBootTestApplicationTests {
 		verify(icuentaRepository, never()).findAll();
 	}
 
+	@Test
+	void contextLoads3() {
+		when(icuentaRepository.findById(1L)).thenReturn(Datos.crearCuenta001());
+
+		Cuenta cuenta1 = icuentaService.findById(1L);
+		Cuenta cuenta2 = icuentaService.findById(1L);
+
+		assertSame(cuenta1, cuenta2);
+		assertTrue(cuenta1 == cuenta2);
+		assertEquals("Andrés", cuenta1.getPersona());
+		assertEquals("Andrés", cuenta2.getPersona());
+
+		verify(icuentaRepository, times(2)).findById(1L);
+	}
 }
