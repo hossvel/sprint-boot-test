@@ -11,7 +11,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.math.BigDecimal;
 
@@ -21,15 +23,14 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class SprintBootTestApplicationTests {
 
-	@Mock
+	@MockBean
 	ICuentaRepository icuentaRepository;
 
-	@Mock
+	@MockBean
 	IBancoRepository ibancoRepository;
 
-	@InjectMocks
-	CuentaServiceImpl icuentaService;
-
+	@Autowired
+	ICuentaService icuentaService;
 
 	@BeforeEach
 	void setUp() {

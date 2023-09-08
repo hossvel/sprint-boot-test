@@ -4,9 +4,10 @@ import com.devhoss.app.models.Cuenta;
 import com.devhoss.app.models.Banco;
 import com.devhoss.app.repositories.IBancoRepository;
 import com.devhoss.app.repositories.ICuentaRepository;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-
+@Service
 public class CuentaServiceImpl implements ICuentaService{
     private ICuentaRepository icuentaRepository;
     private IBancoRepository ibancoRepository;
