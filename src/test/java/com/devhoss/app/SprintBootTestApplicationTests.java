@@ -23,14 +23,14 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class SprintBootTestApplicationTests {
 
-	@MockBean
+	@Mock
 	ICuentaRepository icuentaRepository;
 
-	@MockBean
+	@Mock
 	IBancoRepository ibancoRepository;
 
-	@Autowired
-	ICuentaService icuentaService;
+	@InjectMocks
+	CuentaServiceImpl icuentaService;
 
 	@BeforeEach
 	void setUp() {

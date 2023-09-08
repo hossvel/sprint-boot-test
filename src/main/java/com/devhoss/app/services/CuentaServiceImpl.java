@@ -7,7 +7,8 @@ import com.devhoss.app.repositories.ICuentaRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-@Service
+
+
 public class CuentaServiceImpl implements ICuentaService{
     private ICuentaRepository icuentaRepository;
     private IBancoRepository ibancoRepository;

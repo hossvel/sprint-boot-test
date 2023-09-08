@@ -1,11 +1,15 @@
 package com.devhoss.app.models;
 import com.devhoss.app.exceptions.DineroInsuficienteException;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-
+@Entity
+@Table(name="cuentas")
 public class Cuenta {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String persona;
     private BigDecimal saldo;
