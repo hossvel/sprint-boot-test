@@ -9,6 +9,8 @@ import com.devhoss.app.services.CuentaServiceImpl;
 import com.devhoss.app.services.ICuentaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
@@ -19,22 +21,22 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class SprintBootTestApplicationTests {
 
-
+	@Mock
 	ICuentaRepository icuentaRepository;
 
-
+	@Mock
 	IBancoRepository ibancoRepository;
 
-
-	ICuentaService icuentaService;
+	@InjectMocks
+	CuentaServiceImpl icuentaService;
 
 
 	@BeforeEach
 	void setUp() {
 		System.out.println("Inicial Metodo");
-		icuentaRepository = mock(ICuentaRepository.class);
-		ibancoRepository = mock(IBancoRepository.class);
-		icuentaService = new CuentaServiceImpl(icuentaRepository, ibancoRepository);
+		//icuentaRepository = mock(ICuentaRepository.class);
+		//ibancoRepository = mock(IBancoRepository.class);
+		//icuentaService = new CuentaServiceImpl(icuentaRepository, ibancoRepository);
 		//para reiniciar la cuenta para cada metodo, debido a que falla cuando se modifica el mismo objeto
 		//Datos.CUENTA_001.setSaldo(new BigDecimal("1000"));
         //Datos.CUENTA_002.setSaldo(new BigDecimal("2000"));
