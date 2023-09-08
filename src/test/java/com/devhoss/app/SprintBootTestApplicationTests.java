@@ -70,11 +70,11 @@ class SprintBootTestApplicationTests {
 		//verify de cuenta
 		verify(icuentaRepository, times(3)).findById(1L);
 		verify(icuentaRepository, times(3)).findById(2L);
-		verify(icuentaRepository, times(2)).update(any(Cuenta.class));
+		verify(icuentaRepository, times(2)).save(any(Cuenta.class));
 
 		//verify de banco
 		verify(ibancoRepository, times(2)).findById(1L);
-		verify(ibancoRepository).update(any(Banco.class));
+		verify(ibancoRepository).save(any(Banco.class));
 
 		verify(icuentaRepository, times(6)).findById(anyLong());
 		verify(icuentaRepository, never()).findAll();
@@ -111,11 +111,11 @@ class SprintBootTestApplicationTests {
 		//verify de cuenta
 		verify(icuentaRepository, times(3)).findById(1L);
 		verify(icuentaRepository, times(2)).findById(2L);
-		verify(icuentaRepository, never()).update(any(Cuenta.class));
+		verify(icuentaRepository, never()).save(any(Cuenta.class));
 
 		//verify de banco
 		verify(ibancoRepository, times(1)).findById(1L);
-		verify(ibancoRepository,never()).update(any(Banco.class));
+		verify(ibancoRepository,never()).save(any(Banco.class));
 
 		verify(icuentaRepository, times(5)).findById(anyLong());
 		verify(icuentaRepository, never()).findAll();
