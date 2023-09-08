@@ -91,4 +91,27 @@ public class IntegracionJpaTest {
         assertEquals("3000", cuenta.getSaldo().toPlainString());
 
     }
+
+    @Test
+    void testUpdate() {
+        // Given
+        Cuenta cuentaPepe = new Cuenta(null, "Pepe", new BigDecimal("3000"));
+
+        // When
+        Cuenta cuenta = icuentaRepository.save(cuentaPepe);
+
+        // Then
+        assertEquals("Pepe", cuenta.getPersona());
+        assertEquals("3000", cuenta.getSaldo().toPlainString());
+
+        //UPDATE
+        // When
+        cuenta.setSaldo(new BigDecimal("3800"));
+        Cuenta cuentaActualizada = icuentaRepository.save(cuenta);
+
+        // Then
+        assertEquals("Pepe", cuentaActualizada.getPersona());
+        assertEquals("3800", cuentaActualizada.getSaldo().toPlainString());
+
+    }
 }
