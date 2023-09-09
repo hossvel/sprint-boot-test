@@ -1,5 +1,6 @@
 package com.devhoss.app.controllers;
 
+import com.devhoss.app.models.Cuenta;
 import com.devhoss.app.models.TransaccionDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -133,4 +134,31 @@ public class CuentaControllerWebTestClientTests {
                 .jsonPath("$").isArray()
                 .jsonPath("$").value(hasSize(2));
     }
+
+    @Test
+    void testDetalle() throws JsonProcessingException {
+
+        webtestclient.get().uri("/api/cuentas/1").exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBody()
+                .jsonPath("$.persona").isEqualTo("Hossmell")
+                .jsonPath("$.saldo").isEqualTo(1000);
+
+    }
+    @Test
+    void testDetalle2() {
+
+        webtestclient.get().uri("/api/cuentas/2").exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBody(Cuenta.class)
+                .consumeWith(response -> {
+                    Cuenta cuenta = response.getResponseBody();
+                    assertNotNull(cuenta);
+                    assertEquals("John", cuenta.getPersona());
+                    assertEquals("2000.00", cuenta.getSaldo().toPlainString());
+                });
+    }
+
 }
