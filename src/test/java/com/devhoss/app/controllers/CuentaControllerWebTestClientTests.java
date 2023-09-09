@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.*;
@@ -125,7 +126,7 @@ public class CuentaControllerWebTestClientTests {
 */
     @Test
     @Order(4)
-    void testListar() {
+    void testListarjsonPath() {
         webtestclient.get().uri("/api/cuentas").exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
@@ -140,6 +141,27 @@ public class CuentaControllerWebTestClientTests {
                 .jsonPath("$").value(hasSize(2));
     }
 
+    @Test
+    @Order(5)
+    void testListarconsumeWith() {
+        webtestclient.get().uri("/api/cuentas").exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBodyList(Cuenta.class)
+                .consumeWith(response -> {
+                    List<Cuenta> cuentas = response.getResponseBody();
+                    assertNotNull(cuentas);
+                    assertEquals(2, cuentas.size());
+                    assertEquals(1L, cuentas.get(0).getId());
+                    assertEquals("Hossmell", cuentas.get(0).getPersona());
+                    assertEquals(900, cuentas.get(0).getSaldo().intValue());
+                    assertEquals(2L, cuentas.get(1).getId());
+                    assertEquals("John", cuentas.get(1).getPersona());
+                    assertEquals("2100.00", cuentas.get(1).getSaldo().toPlainString());
+                })
+                .hasSize(2)
+                .value(hasSize(2));
+    }
     @Test
     @Order(2)
     void testDetalle() throws JsonProcessingException {
@@ -167,5 +189,51 @@ public class CuentaControllerWebTestClientTests {
                     assertEquals("2100.00", cuenta.getSaldo().toPlainString());
                 });
     }
+
+    @Test
+    @Order(6)
+    void testGuardar() {
+        // given
+        Cuenta cuenta = new Cuenta(null, "Pepe", new BigDecimal("3000"));
+
+        // when
+        webtestclient.post().uri("/api/cuentas")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(cuenta)
+                .exchange()
+                // then
+                .expectStatus().isCreated()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBody()
+                .jsonPath("$.id").isEqualTo(3)
+                .jsonPath("$.persona").isEqualTo("Pepe")
+                .jsonPath("$.persona").value(is("Pepe"))
+                .jsonPath("$.saldo").isEqualTo(3000);
+    }
+
+    @Test
+    @Order(7)
+    void testGuardarconsumeWith() {
+        // given
+        Cuenta cuenta = new Cuenta(null, "Pepa", new BigDecimal("3500"));
+
+        // when
+        webtestclient.post().uri("/api/cuentas")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(cuenta)
+                .exchange()
+                // then
+                .expectStatus().isCreated()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBody(Cuenta.class)
+                .consumeWith(response -> {
+                    Cuenta c = response.getResponseBody();
+                    assertNotNull(c);
+                    assertEquals(4L, c.getId());
+                    assertEquals("Pepa", c.getPersona());
+                    assertEquals("3500", c.getSaldo().toPlainString());
+                });
+    }
+
 
 }
