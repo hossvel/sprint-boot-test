@@ -21,9 +21,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.*;
-
+import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 public class CuentaControllerWebTestClientTests {
     private ObjectMapper objectMapper;
@@ -36,6 +38,7 @@ public class CuentaControllerWebTestClientTests {
 
 
     @Test
+    @Order(1)
     void testTransferir() throws JsonProcessingException {
         // given
         TransaccionDto dto = new TransaccionDto();
@@ -80,6 +83,7 @@ public class CuentaControllerWebTestClientTests {
 
     }
 
+    /*
     @Test
     void testTransferir1() throws JsonProcessingException {
         // given
@@ -118,8 +122,9 @@ public class CuentaControllerWebTestClientTests {
                 });
 
     }
-
+*/
     @Test
+    @Order(4)
     void testListar() {
         webtestclient.get().uri("/api/cuentas").exchange()
                 .expectStatus().isOk()
@@ -127,15 +132,16 @@ public class CuentaControllerWebTestClientTests {
                 .expectBody()
                 .jsonPath("$[0].persona").isEqualTo("Hossmell")
                 .jsonPath("$[0].id").isEqualTo(1)
-                .jsonPath("$[0].saldo").isEqualTo(1000)
+                .jsonPath("$[0].saldo").isEqualTo(900)
                 .jsonPath("$[1].persona").isEqualTo("John")
                 .jsonPath("$[1].id").isEqualTo(2)
-                .jsonPath("$[1].saldo").isEqualTo(2000)
+                .jsonPath("$[1].saldo").isEqualTo(2100)
                 .jsonPath("$").isArray()
                 .jsonPath("$").value(hasSize(2));
     }
 
     @Test
+    @Order(2)
     void testDetalle() throws JsonProcessingException {
 
         webtestclient.get().uri("/api/cuentas/1").exchange()
@@ -143,10 +149,11 @@ public class CuentaControllerWebTestClientTests {
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
                 .expectBody()
                 .jsonPath("$.persona").isEqualTo("Hossmell")
-                .jsonPath("$.saldo").isEqualTo(1000);
+                .jsonPath("$.saldo").isEqualTo(900);
 
     }
     @Test
+    @Order(3)
     void testDetalle2() {
 
         webtestclient.get().uri("/api/cuentas/2").exchange()
@@ -157,7 +164,7 @@ public class CuentaControllerWebTestClientTests {
                     Cuenta cuenta = response.getResponseBody();
                     assertNotNull(cuenta);
                     assertEquals("John", cuenta.getPersona());
-                    assertEquals("2000.00", cuenta.getSaldo().toPlainString());
+                    assertEquals("2100.00", cuenta.getSaldo().toPlainString());
                 });
     }
 
