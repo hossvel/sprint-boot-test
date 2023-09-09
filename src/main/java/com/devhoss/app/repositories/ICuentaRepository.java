@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-
+@Repository
 public interface ICuentaRepository extends JpaRepository<Cuenta, Long> {
 
     @Query("select c from Cuenta c where c.persona=?1")
