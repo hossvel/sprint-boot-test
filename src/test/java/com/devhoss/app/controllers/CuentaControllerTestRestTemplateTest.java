@@ -58,7 +58,7 @@ class CuentaControllerTestRestTemplateTest {
         dto.setBancoId(1L);
 
         ResponseEntity<String> response = client.
-                postForEntity("/api/cuentas/transferir", dto, String.class);
+                postForEntity("http://localhost:"+ puerto +"/api/cuentas/transferir", dto, String.class);
         System.out.println(puerto);
         String json = response.getBody();
         System.out.println(json);
