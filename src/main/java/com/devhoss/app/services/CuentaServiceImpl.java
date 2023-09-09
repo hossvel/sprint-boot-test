@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
+
 @Component
 public class CuentaServiceImpl implements ICuentaService{
 
@@ -57,5 +59,16 @@ public class CuentaServiceImpl implements ICuentaService{
         int totalTransferencias = banco.getTotalTransferencias();
         banco.setTotalTransferencias(++totalTransferencias);
         ibancoRepository.save(banco);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Cuenta> findAll() {
+        return icuentaRepository.findAll();
+    }
+    @Override
+    @Transactional
+    public Cuenta save(Cuenta cuenta) {
+        return icuentaRepository.save(cuenta);
     }
 }

@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
@@ -38,5 +40,17 @@ public class CuentaController {
         response.put("transaccion", dto);
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    @ResponseStatus(OK)
+    public List<Cuenta> listar() {
+        return icuentaService.findAll();
+    }
+
+    @PostMapping
+    @ResponseStatus(CREATED)
+    public Cuenta guardar(@RequestBody Cuenta cuenta) {
+        return icuentaService.save(cuenta);
     }
 }

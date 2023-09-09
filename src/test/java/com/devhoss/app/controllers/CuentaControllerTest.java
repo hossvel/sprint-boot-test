@@ -1,6 +1,7 @@
 package com.devhoss.app.controllers;
 
 import com.devhoss.app.Datos;
+import com.devhoss.app.models.Cuenta;
 import com.devhoss.app.models.TransaccionDto;
 import com.devhoss.app.services.ICuentaService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,7 +16,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.*;
@@ -95,4 +98,48 @@ class CuentaControllerTest {
 
     }
 
+    @Test
+    void testListar() throws Exception {
+        // Given
+        List<Cuenta> cuentas = Arrays.asList(Datos.crearCuenta001().orElseThrow(),
+                Datos.crearCuenta002().orElseThrow()
+        );
+        when(icuentaService.findAll()).thenReturn(cuentas);
+        // When
+        mvc.perform(get("/api/cuentas").contentType(MediaType.APPLICATION_JSON))
+                // Then
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].persona").value("Hossmell"))
+                .andExpect(jsonPath("$[1].persona").value("Jhon"))
+                .andExpect(jsonPath("$[0].saldo").value("1000"))
+                .andExpect(jsonPath("$[1].saldo").value("2000"))
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(content().json(objectMapper.writeValueAsString(cuentas)));
+
+        verify(icuentaService).findAll();
+    }
+
+    @Test
+    void testGuardar() throws Exception {
+
+        // Given
+        Cuenta cuenta = new Cuenta(null, "Pepe", new BigDecimal("3000"));
+        when(icuentaService.save(any())).then(invocation ->{
+            Cuenta c = invocation.getArgument(0);
+            c.setId(3L);
+            return c;
+        });
+        // when
+        mvc.perform(post("/api/cuentas").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(cuenta)))
+                // Then
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", is(3)))
+                .andExpect(jsonPath("$.persona", is("Pepe")))
+                .andExpect(jsonPath("$.saldo", is(3000)));
+
+        verify(icuentaService).save(any());
+    }
 }
