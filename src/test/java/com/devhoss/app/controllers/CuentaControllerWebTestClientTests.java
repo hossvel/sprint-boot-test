@@ -256,7 +256,9 @@ public class CuentaControllerWebTestClientTests {
                 .hasSize(3);
 
         webtestclient.get().uri("/api/cuentas/3").exchange()
-              .expectStatus().is5xxServerError();
+              //.expectStatus().is5xxServerError();
+                .expectStatus().isNotFound()
+                .expectBody().isEmpty();
     }
 
 }
