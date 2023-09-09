@@ -130,8 +130,8 @@ class SprintBootTestApplicationTests {
 
 		assertSame(cuenta1, cuenta2);
 		assertTrue(cuenta1 == cuenta2);
-		assertEquals("Andrés", cuenta1.getPersona());
-		assertEquals("Andrés", cuenta2.getPersona());
+		assertEquals("Hossmell", cuenta1.getPersona());
+		assertEquals("Hossmell", cuenta2.getPersona());
 
 		verify(icuentaRepository, times(2)).findById(1L);
 	}
