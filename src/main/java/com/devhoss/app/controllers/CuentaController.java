@@ -14,7 +14,7 @@ import java.util.Map;
 
 import static org.springframework.http.HttpStatus.OK;
 
-@Controller
+@RestController
 @RequestMapping("/api/cuentas")
 public class CuentaController {
 

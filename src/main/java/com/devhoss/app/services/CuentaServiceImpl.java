@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-@Service
+@Component
 public class CuentaServiceImpl implements ICuentaService{
 
     private ICuentaRepository icuentaRepository;
