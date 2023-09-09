@@ -30,7 +30,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
-
+@Tag("integracion_rt")
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

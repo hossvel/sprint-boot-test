@@ -25,7 +25,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
-
+@Tag("integracion_wc")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 public class CuentaControllerWebTestClientTests {
